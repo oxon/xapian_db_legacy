@@ -22,7 +22,7 @@ module XapianDb
 
       def reindex_class_task(options)
         klass = constantize options[:class]
-        DirectWriter.reindex_class klass, :verbose => false
+        DirectWriter.reindex_class klass, {:verbose => false}.merge(options[:options])
       end
     end
   end

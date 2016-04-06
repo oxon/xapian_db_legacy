@@ -52,12 +52,22 @@ module XapianDb
           opts = {:verbose => false}.merge(options)
           blueprint = XapianDb::DocumentBlueprint.blueprint_for klass.name
           primary_key = blueprint._adapter.primary_key_for(klass)
-          XapianDb.database.delete_docs_of_class(klass)
-          indexer    = XapianDb::Indexer.new(XapianDb.database, blueprint)
+          if opts['ids']
+            opts['ids'].each do |id|
+              xapian_id = "#{klass}-#{id}"
+              XapianDb.database.delete_doc_with_unique_term xapian_id
+            end
+          else
+            XapianDb.database.delete_docs_of_class(klass)
+          end
+          indexer = XapianDb::Indexer.new(XapianDb.database, blueprint)
           if blueprint.lazy_base_query
             base_query = blueprint.lazy_base_query.call
           else
             base_query = klass
+          end
+          if opts['ids']
+            base_query = base_query.where(primary_key => opts['ids'])
           end
           show_progressbar = false
           obj_count = base_query.count
