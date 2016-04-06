@@ -31,7 +31,7 @@ module XapianDb
         # Reindex all objects of a given class
         # @param [Class] klass The class to reindex
         def reindex_class(klass, options={})
-          beanstalk.put( { :task => "reindex_class_task", :class => klass.name }.to_json )
+          beanstalk.put( { :task => "reindex_class_task", :class => klass.name, :options => options }.to_json )
         end
 
         def beanstalk
