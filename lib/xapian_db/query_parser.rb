@@ -35,10 +35,11 @@ module XapianDb
 
       # Add the searchable prefixes to allow searches by field
       # (like "name:Kogler")
-      processors = [] # add processors (currently one one max) to scope in order to avoid segfaults
-                      # because the Ruby objects are GCd before the underlying
-                      # objects are used by parse_query (binding problem), see for similar problem in php:
+      processors = [] # add processors (currently only one maximum) to scope in order to avoid
+                      # segfaults because the Ruby objects are GCd before the underlying
+                      # objects are used by parse_query, see for similar problem in php:
                       # http://grokbase.com/t/xapian/xapian-discuss/079tvjx0wd/segmentation-fault-using-xapiandatevaluerangeprocessor-with-php-bindings
+                      # appears to happen only in Ruby 2.3.1 and higher, probably more aggressive GC?
       XapianDb::DocumentBlueprint.searchable_prefixes.each do |prefix|
         parser.add_prefix(prefix.to_s.downcase, "X#{prefix.to_s.upcase}")
         type_info = XapianDb::DocumentBlueprint.type_info_for(prefix)
