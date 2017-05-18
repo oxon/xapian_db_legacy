@@ -25,7 +25,7 @@ module XapianDb
         # Remove an object from the index
         # @param [String] xapian_id The document id
         def delete_doc_with(xapian_id, commit=true)
-          beanstalk.put( { :task => "delete_doc_task", :xapian_id => xapian_id }.to_json )
+          beanstalk.put( { :task => "delete_doc_task", :xapian_id => xapian_id }.to_json, 65537 )
         end
 
         # Reindex all objects of a given class
