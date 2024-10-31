@@ -48,7 +48,7 @@ module XapianDb
         end
         config.adapter @adapter.try(:to_sym)
         config.writer @writer.try(:to_sym)
-        config.beanstalk_daemon_url @beanstalk_daemon
+        config.beanstalk_daemon_url @beanstalk_daemon_url
         config.resque_queue @resque_queue
         config.sidekiq_queue @sidekiq_queue
         config.language @language.try(:to_sym)
